@@ -4,7 +4,7 @@ const fs = require("fs");
 const { marked } = require("marked");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 1221;
 
 // ========== 路径配置 ==========
 const POSTS_DIR = path.join(__dirname, "posts");
