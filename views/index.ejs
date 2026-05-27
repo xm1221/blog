@@ -1,0 +1,46 @@
+<%- include('header', { pageTitle: '', siteName: siteName, pages: pages }) %>
+
+<section class="hero">
+  <div class="hero-avatar">
+    <svg viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="40" fill="#eef2ff"/><text x="40" y="54" text-anchor="middle" font-size="36" fill="#4f6ef7" font-family="serif">博</text></svg>
+  </div>
+  <h1 class="hero-title"><%= siteName %></h1>
+  <% if (description) { %>
+    <p class="hero-desc"><%= description %></p>
+  <% } %>
+  <div class="hero-line"></div>
+</section>
+
+<% if (articles.length === 0) { %>
+  <div class="empty-state">
+    <div class="empty-icon">📝</div>
+    <h2>还没有文章</h2>
+    <p>在 <code>posts/</code> 目录下创建 <code>.md</code> 文件，然后在 <code>config.json</code> 中添加配置即可开始写作。</p>
+  </div>
+<% } else { %>
+  <div class="article-list">
+    <% articles.forEach(function(article, index) { %>
+      <article class="post-card">
+        <div class="post-card-accent" style="background: hsl(<%= 210 + index * 40 %>, 70%, 58%)"></div>
+        <div class="post-card-body">
+          <div class="post-card-meta-top">
+            <% if (article.date) { %>
+              <time class="post-card-date"><%= article.date %></time>
+            <% } %>
+            <span class="post-card-dot">·</span>
+            <span class="post-card-label">文章</span>
+          </div>
+          <h2 class="post-card-title">
+            <a href="/post/<%= article.slug %>"><%= article.title %></a>
+          </h2>
+          <% if (article.description) { %>
+            <p class="post-card-excerpt"><%= article.description %></p>
+          <% } %>
+          <a href="/post/<%= article.slug %>" class="post-card-link">继续阅读 <span class="arrow">→</span></a>
+        </div>
+      </article>
+    <% }); %>
+  </div>
+<% } %>
+
+<%- include('footer', { siteName: siteName }) %>

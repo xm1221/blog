@@ -4,6 +4,10 @@ bin-release/
 [Oo]bj/
 [Bb]in/
 
+# Static build output
+_site/
+node_modules/
+
 # Other files and folders
 .settings/
 
