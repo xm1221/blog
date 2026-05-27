@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= typeof pageTitle !== 'undefined' && pageTitle ? pageTitle + ' - ' : '' %><%= siteName %></title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="<%= basePath %>/css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="/" class="site-logo"><%= siteName %></a>
+      <a href="<%= basePath %>/" class="site-logo"><%= siteName %></a>
       <nav class="site-nav">
-        <a href="/">首页</a>
+        <a href="<%= basePath %>/">首页</a>
         <% if (typeof pages !== 'undefined' && pages.length > 0) { %>
           <% pages.forEach(function(p) { %>
-            <a href="/page/<%= p.name %>"><%= p.name %></a>
+            <a href="<%= basePath %>/page/<%= p.name %>"><%= p.name %></a>
           <% }); %>
         <% } %>
       </nav>

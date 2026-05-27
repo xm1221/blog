@@ -1,4 +1,4 @@
-<%- include('header', { pageTitle: '', siteName: siteName, pages: pages }) %>
+<%- include('header', { pageTitle: '', siteName: siteName, basePath: basePath, pages: pages }) %>
 
 <section class="hero">
   <div class="hero-avatar">
@@ -31,16 +31,16 @@
             <span class="post-card-label">文章</span>
           </div>
           <h2 class="post-card-title">
-            <a href="/post/<%= article.slug %>"><%= article.title %></a>
+            <a href="<%= basePath %>/post/<%= article.slug %>"><%= article.title %></a>
           </h2>
           <% if (article.description) { %>
             <p class="post-card-excerpt"><%= article.description %></p>
           <% } %>
-          <a href="/post/<%= article.slug %>" class="post-card-link">继续阅读 <span class="arrow">→</span></a>
+          <a href="<%= basePath %>/post/<%= article.slug %>" class="post-card-link">继续阅读 <span class="arrow">→</span></a>
         </div>
       </article>
     <% }); %>
   </div>
 <% } %>
 
-<%- include('footer', { siteName: siteName }) %>
+<%- include('footer', { siteName: siteName, basePath: basePath }) %>

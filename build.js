@@ -178,6 +178,7 @@ async function build() {
   console.log("📋 生成首页");
   const indexHtml = await renderTemplate("index", {
     siteName: config.siteName || "我的博客",
+    basePath: config.basePath || "",
     description: config.description || "",
     articles,
     pages,
@@ -193,6 +194,7 @@ async function build() {
       if (!full) continue;
       const postHtml = await renderTemplate("post", {
         siteName: config.siteName || "我的博客",
+        basePath: config.basePath || "",
         article: full,
         pages,
       });
@@ -206,15 +208,14 @@ async function build() {
   // ---- 3. 自定义 HTML 页面 ----
   if (pages.length > 0) {
     console.log(`📄 生成 ${pages.length} 个自定义页面`);
+    const bp = config.basePath || "";
     for (const p of pages) {
       const srcPath = path.join(PAGES_DIR, p.file);
       if (fs.existsSync(srcPath)) {
-        // 修正自定义页面中的资源路径：将 /css/ 替换为相对路径
         let html = fs.readFileSync(srcPath, "utf-8");
-        // 确保页面中的静态资源路径正确指向根目录
-        html = html.replace(/href="\/css\//g, 'href="/css/');
-        html = html.replace(/src="\/js\//g, 'src="/js/');
-        // 修正导航链接为相对路径（对于干净 URL 结构）
+        // 将自定义页面中的绝对路径加上 basePath 前缀
+        // 例：href="/css/" → href="/blog/css/"，但跳过 href="//" 协议相对 URL
+        html = html.replace(/(href|src|action)="\/(?!\/)/g, `$1="${bp}/`);
         writeFile(
           path.join(OUT_DIR, "page", p.name, "index.html"),
           html
@@ -227,6 +228,7 @@ async function build() {
   console.log("🚫 生成 404 页面");
   const notFoundHtml = await renderTemplate("404", {
     siteName: config.siteName || "我的博客",
+    basePath: config.basePath || "",
     message: "页面未找到",
     pages,
   });

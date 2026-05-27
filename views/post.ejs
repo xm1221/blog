@@ -1,4 +1,4 @@
-<%- include('header', { pageTitle: article.title, siteName: siteName, pages: pages }) %>
+<%- include('header', { pageTitle: article.title, siteName: siteName, basePath: basePath, pages: pages }) %>
 
 <article class="post-full">
   <header class="post-header">
@@ -17,7 +17,7 @@
 </article>
 
 <div class="post-nav">
-  <a href="/" class="back-home">← 返回首页</a>
+  <a href="<%= basePath %>/" class="back-home">← 返回首页</a>
 </div>
 
-<%- include('footer', { siteName: siteName }) %>
+<%- include('footer', { siteName: siteName, basePath: basePath }) %>

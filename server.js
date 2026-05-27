@@ -17,7 +17,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // ========== 静态资源 ==========
-app.use(express.static(PUBLIC_DIR));
+app.use(basePath || "/", express.static(PUBLIC_DIR));
 
 // ========== 工具函数 ==========
 
@@ -141,13 +141,15 @@ function getPages() {
 }
 
 // ========== 路由 ==========
+const router = express.Router();
 
 // 首页 —— 文章列表
-app.get("/", (_req, res) => {
+router.get("/", (_req, res) => {
   const config = loadConfig();
   const articles = getVisibleArticles();
   res.render("index", {
     siteName: config.siteName || "我的博客",
+    basePath: config.basePath || "",
     description: config.description || "",
     articles,
     pages: getPages(),
@@ -155,11 +157,12 @@ app.get("/", (_req, res) => {
 });
 
 // 文章详情页
-app.get("/post/:slug", (req, res) => {
+router.get("/post/:slug", (req, res) => {
   const article = getArticle(req.params.slug);
   if (!article) {
     return res.status(404).render("404", {
       siteName: loadConfig().siteName || "我的博客",
+      basePath: loadConfig().basePath || "",
       message: "文章未找到",
       pages: getPages(),
     });
@@ -168,24 +171,25 @@ app.get("/post/:slug", (req, res) => {
   const config = loadConfig();
   res.render("post", {
     siteName: config.siteName || "我的博客",
+    basePath: config.basePath || "",
     article,
     pages: getPages(),
   });
 });
 
 // 自定义 HTML 页面
-app.get("/page/:name", (req, res) => {
+router.get("/page/:name", (req, res) => {
   const pageName = req.params.name;
   const htmlPath = path.join(PAGES_DIR, pageName + ".html");
 
   if (!fs.existsSync(htmlPath)) {
-    // 尝试是不是目录（例如 /page/something.html 直接访问）
     const altPath = path.join(PAGES_DIR, req.params.name);
     if (fs.existsSync(altPath) && altPath.endsWith(".html")) {
       return res.sendFile(altPath);
     }
     return res.status(404).render("404", {
       siteName: loadConfig().siteName || "我的博客",
+      basePath: loadConfig().basePath || "",
       message: "页面未找到",
       pages: getPages(),
     });
@@ -194,10 +198,14 @@ app.get("/page/:name", (req, res) => {
   res.sendFile(htmlPath);
 });
 
-// 404
+// 将路由挂载到 basePath 下
+app.use(basePath, router);
+
+// 404（捕获所有未匹配的路径）
 app.use((_req, res) => {
   res.status(404).render("404", {
     siteName: loadConfig().siteName || "我的博客",
+    basePath: loadConfig().basePath || "",
     message: "页面未找到",
     pages: getPages(),
   });
@@ -205,15 +213,16 @@ app.use((_req, res) => {
 
 // ========== 启动 ==========
 app.listen(PORT, () => {
-  console.log(`\n✨ 博客已启动：http://localhost:${PORT}\n`);
+  const bp = config.basePath || "";
+  console.log(`\n✨ 博客已启动：http://localhost:${PORT}${bp}\n`);
   const articles = getVisibleArticles();
   console.log(`📝 已加载 ${articles.length} 篇文章：`);
-  articles.forEach(a => console.log(`   - ${a.title}  (/post/${a.slug})`));
+  articles.forEach(a => console.log(`   - ${a.title}  (${bp}/post/${a.slug})`));
 
   const pages = getPages();
   if (pages.length > 0) {
     console.log(`📄 已加载 ${pages.length} 个自定义页面：`);
-    pages.forEach(p => console.log(`   - ${p.name}  (/page/${p.name})`));
+    pages.forEach(p => console.log(`   - ${p.name}  (${bp}/page/${p.name})`));
   }
   console.log("");
 });
