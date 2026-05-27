@@ -70,7 +70,7 @@ function getVisibleArticles() {
     if (item.visible === false) continue;
     const mdPath = path.join(POSTS_DIR, item.file);
     if (!fs.existsSync(mdPath)) continue;
-    const slug = item.slug || item.file.replace(/\.md$/, "");
+    const slug = item.slug || item.file.replace(/\.md$/, "").replace(/[\\/]/g, "-");
     const title = item.title || extractTitle(mdPath) || slug;
     const stat = fs.statSync(mdPath);
     articles.push({ slug, title, file: item.file, date: item.date || "",
@@ -89,7 +89,7 @@ function getVisibleArticles() {
 function getArticle(slug) {
   const config = loadConfig();
   for (const item of config.articles) {
-    const itemSlug = item.slug || item.file.replace(/\.md$/, "");
+    const itemSlug = item.slug || item.file.replace(/\.md$/, "").replace(/[\\/]/g, "-");
     if (itemSlug === slug) {
       if (item.visible === false) return null;
       const mdPath = path.join(POSTS_DIR, item.file);

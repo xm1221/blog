@@ -66,7 +66,7 @@ function getVisibleArticles() {
       console.warn(`   ⚠ 文章文件不存在：${item.file}`);
       continue;
     }
-    const slug = item.slug || item.file.replace(/\.md$/, "");
+    const slug = item.slug || item.file.replace(/\.md$/, "").replace(/[\\/]/g, "-");
     const title = item.title || extractTitle(mdPath) || slug;
     const stat = fs.statSync(mdPath);
     articles.push({
@@ -90,7 +90,7 @@ function getVisibleArticles() {
 function getArticle(slug) {
   const config = loadConfig();
   for (const item of config.articles) {
-    const itemSlug = item.slug || item.file.replace(/\.md$/, "");
+    const itemSlug = item.slug || item.file.replace(/\.md$/, "").replace(/[\\/]/g, "-");
     if (itemSlug === slug) {
       if (item.visible === false) return null;
       const mdPath = path.join(POSTS_DIR, item.file);
