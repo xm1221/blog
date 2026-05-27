@@ -2,9 +2,16 @@
   "siteName": "xm1221的博客",
   "basePath": "/blog",
   "description": "人生若尘露，天道邈悠悠",
-"avatar": {
-  "image": "img/avatar.png"
-},
+  "avatar": {
+    "image": "img/avatar.png"
+  },
+  "links": [
+    {
+      "name": "miehex的hexdoc文档",
+      "url": "https://xm1221.github.io/miehex-1.21.1-fabric-neoforge/v/1.0.1.1.21.1+1.21.1/1.0/zh_cn/",
+      "description": "xm1221的Hex Casting附属开发中。。。咕咕咕"
+    }
+  ],
   "articles": [
     {
       "file": "hello-world.md",

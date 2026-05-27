@@ -1,0 +1,32 @@
+<%- include('header', { pageTitle: '友链', siteName: siteName, basePath: basePath, pages: pages, hasLinks: true }) %>
+
+<section class="hero">
+  <h1 class="hero-title">🔗 友情链接</h1>
+  <p class="hero-desc">一些值得推荐的好地方</p>
+  <div class="hero-line"></div>
+</section>
+
+<% if (links && links.length > 0) { %>
+  <div class="links-grid">
+    <% links.forEach(function(link) { %>
+      <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer" class="link-card">
+        <div class="link-card-avatar"><%= link.name.charAt(0) %></div>
+        <div class="link-card-body">
+          <h3 class="link-card-name"><%= link.name %></h3>
+          <% if (link.description) { %>
+            <p class="link-card-desc"><%= link.description %></p>
+          <% } %>
+          <span class="link-card-url"><%= link.url.replace(/^https?:\/\//, '') %></span>
+        </div>
+      </a>
+    <% }); %>
+  </div>
+<% } else { %>
+  <div class="empty-state">
+    <div class="empty-icon">🔗</div>
+    <h2>暂无友链</h2>
+    <p>在 <code>config.json</code> 的 <code>links</code> 数组中添加友情链接即可。</p>
+  </div>
+<% } %>
+
+<%- include('footer', { siteName: siteName, basePath: basePath }) %>

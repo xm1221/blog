@@ -173,6 +173,7 @@ async function build() {
   const config = loadConfig();
   const articles = getVisibleArticles();
   const pages = getPages();
+  const hLinks = config.links && config.links.length > 0;
 
   // ---- 1. 首页 ----
   console.log("📋 生成首页");
@@ -184,6 +185,7 @@ async function build() {
     articles,
     pages,
     pageTitle: "",
+    hasLinks: hLinks,
   });
   writeFile(path.join(OUT_DIR, "index.html"), indexHtml);
 
@@ -198,6 +200,7 @@ async function build() {
         basePath: config.basePath || "",
         article: full,
         pages,
+        hasLinks: hLinks,
       });
       writeFile(
         path.join(OUT_DIR, "post", article.slug, "index.html"),
@@ -214,9 +217,7 @@ async function build() {
       const srcPath = path.join(PAGES_DIR, p.file);
       if (fs.existsSync(srcPath)) {
         let html = fs.readFileSync(srcPath, "utf-8");
-        // 先将自定义页面中的绝对路径加上 basePath 前缀
         html = html.replace(/(href|src|action)="\/(?!\/)/g, `$1="${bp}/`);
-        // 然后注入 <base> 标签（放在路径替换之后，避免 base 自身的 href 被二次替换）
         html = html.replace(/<head>/, `<head>\n  <base href="${bp}/">`);
         writeFile(
           path.join(OUT_DIR, "page", p.name, "index.html"),
@@ -226,23 +227,37 @@ async function build() {
     }
   }
 
-  // ---- 4. 404 页面 ----
+  // ---- 4. 友链页 ----
+  if (hLinks) {
+    console.log("🔗 生成友链页");
+    const linksHtml = await renderTemplate("links", {
+      siteName: config.siteName || "我的博客",
+      basePath: config.basePath || "",
+      pages,
+      hasLinks: hLinks,
+      links: config.links,
+    });
+    writeFile(path.join(OUT_DIR, "links", "index.html"), linksHtml);
+  }
+
+  // ---- 5. 404 页面 ----
   console.log("🚫 生成 404 页面");
   const notFoundHtml = await renderTemplate("404", {
     siteName: config.siteName || "我的博客",
     basePath: config.basePath || "",
     message: "页面未找到",
     pages,
+    hasLinks: hLinks,
   });
   writeFile(path.join(OUT_DIR, "404.html"), notFoundHtml);
 
-  // ---- 5. 复制静态资源 ----
+  // ---- 6. 复制静态资源 ----
   if (fs.existsSync(PUBLIC_DIR)) {
     console.log("📦 复制静态资源");
     copyDir(PUBLIC_DIR, OUT_DIR);
   }
 
-  // ---- 6. 统计 ----
+  // ---- 7. 统计 ----
   const countFiles = (dir) => {
     let count = 0;
     if (!fs.existsSync(dir)) return count;

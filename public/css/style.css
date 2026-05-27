@@ -435,6 +435,70 @@ body {
   color: var(--color-primary);
 }
 
+/* ---------- 友链网格 ---------- */
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.link-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.link-card-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-code-bg);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.link-card-body {
+  min-width: 0;
+}
+
+.link-card-name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.link-card-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+.link-card-url {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  word-break: break-all;
+}
+
 /* ---------- 空状态 ---------- */
 .empty-state {
   text-align: center;

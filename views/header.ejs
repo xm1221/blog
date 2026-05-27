@@ -13,6 +13,9 @@
       <a href="<%= basePath %>/" class="site-logo"><%= siteName %></a>
       <nav class="site-nav">
         <a href="<%= basePath %>/">首页</a>
+        <% if (typeof hasLinks !== 'undefined' && hasLinks) { %>
+          <a href="<%= basePath %>/links">友链</a>
+        <% } %>
         <% if (typeof pages !== 'undefined' && pages.length > 0) { %>
           <% pages.forEach(function(p) { %>
             <a href="<%= basePath %>/page/<%= p.name %>"><%= p.name %></a>
