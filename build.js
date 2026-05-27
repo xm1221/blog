@@ -213,9 +213,10 @@ async function build() {
       const srcPath = path.join(PAGES_DIR, p.file);
       if (fs.existsSync(srcPath)) {
         let html = fs.readFileSync(srcPath, "utf-8");
-        // 将自定义页面中的绝对路径加上 basePath 前缀
-        // 例：href="/css/" → href="/blog/css/"，但跳过 href="//" 协议相对 URL
+        // 先将自定义页面中的绝对路径加上 basePath 前缀
         html = html.replace(/(href|src|action)="\/(?!\/)/g, `$1="${bp}/`);
+        // 然后注入 <base> 标签（放在路径替换之后，避免 base 自身的 href 被二次替换）
+        html = html.replace(/<head>/, `<head>\n  <base href="${bp}/">`);
         writeFile(
           path.join(OUT_DIR, "page", p.name, "index.html"),
           html
