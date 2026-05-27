@@ -1,13 +1,23 @@
 {
   "siteName": "xm1221的博客",
   "basePath": "/blog",
-  "description": "用文字记录思考，用代码构建世界。",
+  "description": "人生若尘露，天道邈悠悠",
+"avatar": {
+  "image": "img/avatar.png"
+},
   "articles": [
     {
       "file": "hello-world.md",
       "title": "你好，世界！",
       "date": "2026-05-27",
-      "description": "第一篇博客文章，介绍这个简洁博客系统的使用方法与 Markdown 功能展示。",
+      "description": "第0篇博客文章，介绍这个简洁博客系统的使用方法与 Markdown 功能展示。",
+      "visible": false
+    },
+    {
+      "file": "xm1221.md",
+      "title": "关于我",
+      "date": "2026-05-27",
+      "description": "第1篇博客文章，关于我自己",
       "visible": true
     }
   ]

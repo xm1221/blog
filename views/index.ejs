@@ -1,9 +1,20 @@
 <%- include('header', { pageTitle: '', siteName: siteName, basePath: basePath, pages: pages }) %>
 
 <section class="hero">
-  <div class="hero-avatar">
-    <svg viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="40" fill="#eef2ff"/><text x="40" y="54" text-anchor="middle" font-size="36" fill="#4f6ef7" font-family="serif">博</text></svg>
-  </div>
+  <% if (avatar && avatar.image) { %>
+    <!-- 图片头像 -->
+    <div class="hero-avatar">
+      <img src="<%= basePath %>/<%= avatar.image %>" alt="头像" class="hero-avatar-img">
+    </div>
+  <% } else { %>
+    <!-- 文字头像（默认） -->
+    <div class="hero-avatar">
+      <svg viewBox="0 0 80 80" fill="none">
+        <rect width="80" height="80" rx="40" fill="<%= (avatar && avatar.bg) || '#eef2ff' %>"/>
+        <text x="40" y="54" text-anchor="middle" font-size="36" fill="<%= (avatar && avatar.color) || '#4f6ef7' %>" font-family="serif"><%= (avatar && avatar.text) || '博' %></text>
+      </svg>
+    </div>
+  <% } %>
   <h1 class="hero-title"><%= siteName %></h1>
   <% if (description) { %>
     <p class="hero-desc"><%= description %></p>

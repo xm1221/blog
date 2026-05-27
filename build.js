@@ -180,6 +180,7 @@ async function build() {
     siteName: config.siteName || "我的博客",
     basePath: config.basePath || "",
     description: config.description || "",
+    avatar: config.avatar,
     articles,
     pages,
     pageTitle: "",
