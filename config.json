@@ -31,6 +31,13 @@
       "date": "2026-05-27",
       "description": "第1篇博客文章，关于我自己",
       "visible": true
+    },
+    {
+      "file":"hexcasting/casting.md",
+      "title":"xm1221的咒法学教程",
+      "date":"2026-05-27",
+      "description":"在施法之前",
+      "visible":true
     }
   ]
 }
